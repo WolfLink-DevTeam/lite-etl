@@ -10,7 +10,15 @@ import com.securova.server.transformer.DataTransformer;
 import org.jetbrains.annotations.NotNull;
 
 public class FinalVerifier extends DataTransformer<ProcessedData,ProcessedData> {
-    public FinalVerifier() {
+    private static FinalVerifier instance;
+    public static synchronized FinalVerifier getInstance() {
+        if (instance == null) {
+            instance = new FinalVerifier();
+        }
+        return instance;
+    }
+
+    private FinalVerifier() {
         super(ProcessedData.class, ProcessedData.class);
     }
 

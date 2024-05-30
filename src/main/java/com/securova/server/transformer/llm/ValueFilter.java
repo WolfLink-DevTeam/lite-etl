@@ -8,7 +8,14 @@ import com.securova.server.transformer.DataTransformer;
 import org.jetbrains.annotations.NotNull;
 
 public class ValueFilter extends DataTransformer<SourceData,SourceData> {
-    public ValueFilter() {
+    private static ValueFilter instance;
+    public static synchronized ValueFilter getInstance() {
+        if (instance == null) {
+            instance = new ValueFilter();
+        }
+        return instance;
+    }
+    private ValueFilter() {
         super(SourceData.class, SourceData.class);
     }
     @Override

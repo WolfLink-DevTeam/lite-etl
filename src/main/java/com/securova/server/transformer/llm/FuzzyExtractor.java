@@ -9,7 +9,14 @@ import com.securova.server.transformer.DataTransformer;
 import org.jetbrains.annotations.NotNull;
 
 public class FuzzyExtractor extends DataTransformer<SourceData, ProcessedData> {
-    public FuzzyExtractor() {
+    private static FuzzyExtractor instance;
+    public static synchronized FuzzyExtractor getInstance() {
+        if (instance == null) {
+            instance = new FuzzyExtractor();
+        }
+        return instance;
+    }
+    private FuzzyExtractor() {
         super(SourceData.class, ProcessedData.class);
     }
 
