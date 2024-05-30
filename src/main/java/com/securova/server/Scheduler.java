@@ -32,7 +32,10 @@ public class Scheduler {
             long period,
             TimeUnit unit
     ) {
-        return scheduler.scheduleAtFixedRate(()-> CompletableFuture.runAsync(runnable), initialDelay, period, unit);
+        return scheduler.scheduleAtFixedRate(()-> CompletableFuture.runAsync(runnable).exceptionallyAsync(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        }), initialDelay, period, unit);
     }
 
     public void cancelTask(ScheduledFuture<?> future) {

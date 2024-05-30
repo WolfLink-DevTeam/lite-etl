@@ -8,7 +8,7 @@ public abstract class DataWriter {
     @Setter
     Pipeline pipeline;
 
-    public void initialize(Pipeline pipeline) {
+    public void bind(Pipeline pipeline) {
         this.pipeline = pipeline;
     }
 

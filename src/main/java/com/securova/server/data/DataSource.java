@@ -1,14 +1,10 @@
 package com.securova.server.data;
 
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class DataSource {
 
-    protected FormatDictionary formatDictionary = new FormatDictionary();
     /**
      * 数据源上次更新时间
      */
@@ -22,12 +18,12 @@ public abstract class DataSource {
         this.updateTime = updateTime;
     }
 
-    protected abstract Set<SourceData> fetchRawData();
-    public Set<SourceData> fetchData() {
-        Set<SourceData> dataSet = fetchRawData().stream()
+    protected abstract Collection<SourceData> fetchRawData();
+    public Collection<SourceData> fetchData() {
+        Collection<SourceData> rawData = fetchRawData();
+        Collection<SourceData> dataSet = rawData.stream()
                 .filter(sourceData -> sourceData.updateTime().after(updateTime)) // 差量更新数据;
-                .collect(Collectors.toSet());
-        dataSet.forEach(sourceData -> formatDictionary.format(sourceData.content(),sourceData.type())); // 数据字段规格化
+                .toList();
         Optional<SourceData> newestData = dataSet.stream().max(Comparator.comparing(SourceData::updateTime));
         newestData.ifPresent(data -> this.updateTime = data.updateTime());// 刷新更新时间
         return dataSet;

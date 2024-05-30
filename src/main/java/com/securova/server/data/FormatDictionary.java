@@ -4,7 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class FormatDictionary {
     /**
@@ -30,28 +32,31 @@ public class FormatDictionary {
         sourceDictionary.put(fromName, toName);
     }
     public void format(JsonElement data,AlertType type) {
+        // 数据源级别字典替换
+        for(Map.Entry<String,String> entry : sourceDictionary.entrySet()) {
+            jsonKeyReplacer(data,entry.getKey(),entry.getValue());
+        }
+        // 警告类型级别字典替换
+        if(!typeDictionaries.containsKey(type)) return;
+        for(Map.Entry<String,String> entry : typeDictionaries.get(type).entrySet()) {
+            jsonKeyReplacer(data,entry.getKey(),entry.getValue());
+        }
+    }
+    private void jsonKeyReplacer(JsonElement data, String from, String to) {
         if(data.isJsonArray()) {
-            data.getAsJsonArray().forEach((element)->format(element,type));
+            data.getAsJsonArray().forEach((element)-> jsonKeyReplacer(element,from,to));
         } else if(data.isJsonObject()) {
-            JsonObject rawData = data.getAsJsonObject();
-            // 数据源级别字典替换
-            for(Map.Entry<String,String> entry : sourceDictionary.entrySet()) {
-                if(rawData.has(entry.getKey())) {
-                    JsonElement value = rawData.get(entry.getKey());
-                    rawData.remove(entry.getKey());
-                    if(entry.getValue().isEmpty()) continue;
-                    rawData.add(entry.getValue(),value);
-                }
-            }
-            // 警告类型级别字典替换
-            if(!typeDictionaries.containsKey(type)) return;
-            for(Map.Entry<String,String> entry : typeDictionaries.get(type).entrySet()) {
-                if(rawData.has(entry.getKey())) {
-                    JsonElement value = rawData.get(entry.getKey());
-                    rawData.remove(entry.getKey());
-                    if(entry.getValue().isEmpty()) continue;
-                    rawData.add(entry.getValue(),value);
-                }
+            JsonObject jo = data.getAsJsonObject();
+            Set<String> keys = new HashSet<>(jo.keySet());
+            for(String key : keys) {
+                JsonElement value = jo.get(key);
+                if(value.isJsonPrimitive()) {
+                    if(key.equals(from)) {
+                        jo.remove(from);
+                        if(to != null && !to.isEmpty()) jo.add(to,value);
+                        break;
+                    }
+                } else if(!value.isJsonNull()) jsonKeyReplacer(jo.get(key),from,to);
             }
         }
     }
