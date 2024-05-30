@@ -6,12 +6,11 @@ import com.securova.server.data.SourceData;
 public abstract class DataSubscriber {
 
     protected Pipeline pipeline;
+    boolean enable = false;
 
     public void bind(Pipeline pipeline) {
         this.pipeline = pipeline;
     }
-
-    boolean enable = false;
 
     public void setEnable(boolean enable) {
         if (this.enable == enable) return;

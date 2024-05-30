@@ -4,9 +4,12 @@ import java.util.concurrent.*;
 
 public class Scheduler {
 
+    private static volatile Scheduler instance = null;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    private static volatile Scheduler instance = null;
+    private Scheduler() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownNow));
+    }
 
     public static Scheduler getInstance() {
         if (instance == null) {
@@ -19,9 +22,6 @@ public class Scheduler {
         return instance;
     }
 
-    private Scheduler() {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownNow));
-    }
     public void shutdownNow() {
         scheduler.shutdownNow();
     }
@@ -32,7 +32,7 @@ public class Scheduler {
             long period,
             TimeUnit unit
     ) {
-        return scheduler.scheduleAtFixedRate(()-> CompletableFuture.runAsync(runnable).exceptionallyAsync(throwable -> {
+        return scheduler.scheduleAtFixedRate(() -> CompletableFuture.runAsync(runnable).exceptionallyAsync(throwable -> {
             throwable.printStackTrace();
             return null;
         }), initialDelay, period, unit);

@@ -5,7 +5,7 @@ import com.securova.server.data.ExtraData;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class DataTransformer<FROM,TO> {
+public abstract class DataTransformer<FROM, TO> {
 
     Pipeline pipeline;
     @Getter
@@ -23,7 +23,10 @@ public abstract class DataTransformer<FROM,TO> {
     }
 
     public final TO transform(@NotNull Object from, @NotNull ExtraData extra) {
-        return transformTo(fromClass.cast(from),extra);
+        return transformTo(fromClass.cast(from), extra);
     }
-    protected TO transformTo(@NotNull FROM from,@NotNull ExtraData extra) { return null; }
+
+    protected TO transformTo(@NotNull FROM from, @NotNull ExtraData extra) {
+        return null;
+    }
 }

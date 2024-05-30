@@ -12,14 +12,17 @@ import java.time.temporal.ChronoUnit;
 
 public class ETLConfig {
 
-    private ETLConfig(){}
-
     private static volatile ETLConfig instance = null;
+    @Getter
+    ChatLanguageModel model = null;
+
+    private ETLConfig() {
+    }
 
     public static ETLConfig getInstance() {
-        if(instance == null) {
-            synchronized(ETLConfig.class) {
-                if(instance == null) {
+        if (instance == null) {
+            synchronized (ETLConfig.class) {
+                if (instance == null) {
                     instance = new ETLConfig();
                 }
             }
@@ -27,12 +30,10 @@ public class ETLConfig {
         return instance;
     }
 
-    @Getter
-    ChatLanguageModel model = null;
-
     public boolean isLLMEnabled() {
         return model != null;
     }
+
     public void enableLLM(@Nullable String baseUrl, @NotNull String secretKey, @NotNull ModelSource modelSource, @NotNull String modelName) {
         switch (modelSource) {
             case DASH_SCOPE -> {

@@ -19,28 +19,31 @@ public abstract class DataSource {
         updateTime = Calendar.getInstance();
         updateTime.setTimeInMillis(0);
     }
-    public DataSource(DataSplitter dataSplitter,UpdateTimeFinder updateTimeFinder,Calendar updateTime) {
+
+    public DataSource(DataSplitter dataSplitter, UpdateTimeFinder updateTimeFinder, Calendar updateTime) {
         this.dataSplitter = dataSplitter;
         this.updateTimeFinder = updateTimeFinder;
         this.updateTime = updateTime;
     }
 
-    protected abstract Collection<Map.Entry<AlertType,JsonElement>> fetchJsonElement();
+    protected abstract Collection<Map.Entry<AlertType, JsonElement>> fetchJsonElement();
+
     public Collection<SourceData> fetchData() {
         Collection<SourceData> dataSet = fetchJsonElement()
                 .stream()
-                .flatMap(it -> dataPreprocess(it.getKey(),it.getValue()).stream())
+                .flatMap(it -> dataPreprocess(it.getKey(), it.getValue()).stream())
                 .filter(sourceData -> sourceData.updateTime().after(updateTime)) // 差量更新数据;
                 .toList();
         Optional<SourceData> newestData = dataSet.stream().max(Comparator.comparing(SourceData::updateTime));
         newestData.ifPresent(data -> this.updateTime = data.updateTime());// 刷新更新时间
         return dataSet;
     }
+
     private Collection<SourceData> dataPreprocess(AlertType type, JsonElement jsonElement) {
         return dataSplitter
-                .split(type,jsonElement)// 数据分片
+                .split(type, jsonElement)// 数据分片
                 .stream()
-                .map(it -> new SourceData(type,updateTimeFinder.find(type,it),it))// 类型映射
+                .map(it -> new SourceData(type, updateTimeFinder.find(type, it), it))// 类型映射
                 .toList();
     }
 }

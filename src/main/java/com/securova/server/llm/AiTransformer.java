@@ -1,7 +1,5 @@
 package com.securova.server.llm;
 
-import com.securova.server.data.ProcessedData;
-import com.securova.server.data.SourceData;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;

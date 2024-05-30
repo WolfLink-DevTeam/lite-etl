@@ -9,8 +9,13 @@ import com.securova.server.llm.SynchronizedAiTransformer;
 import com.securova.server.transformer.DataTransformer;
 import org.jetbrains.annotations.NotNull;
 
-public class FinalVerifier extends DataTransformer<ProcessedData,ProcessedData> {
+public class FinalVerifier extends DataTransformer<ProcessedData, ProcessedData> {
     private static FinalVerifier instance;
+
+    private FinalVerifier() {
+        super(ProcessedData.class, ProcessedData.class);
+    }
+
     public static synchronized FinalVerifier getInstance() {
         if (instance == null) {
             instance = new FinalVerifier();
@@ -18,13 +23,9 @@ public class FinalVerifier extends DataTransformer<ProcessedData,ProcessedData> 
         return instance;
     }
 
-    private FinalVerifier() {
-        super(ProcessedData.class, ProcessedData.class);
-    }
-
     @Override
     protected ProcessedData transformTo(@NotNull ProcessedData data, @NotNull ExtraData extra) {
-        if(!(extra.getContent() instanceof SourceData)) return null;
-        return AiResponseConverter.toBoolean(SynchronizedAiTransformer.get().isDataValid(((SourceData) extra.getContent()).toJson().toString(),new Gson().toJson(data))) ? data : null;
+        if (!(extra.getContent() instanceof SourceData)) return null;
+        return AiResponseConverter.toBoolean(SynchronizedAiTransformer.get().isDataValid(((SourceData) extra.getContent()).toJson().toString(), new Gson().toJson(data))) ? data : null;
     }
 }

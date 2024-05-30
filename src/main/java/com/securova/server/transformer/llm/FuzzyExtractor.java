@@ -10,14 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class FuzzyExtractor extends DataTransformer<SourceData, ProcessedData> {
     private static FuzzyExtractor instance;
+
+    private FuzzyExtractor() {
+        super(SourceData.class, ProcessedData.class);
+    }
+
     public static synchronized FuzzyExtractor getInstance() {
         if (instance == null) {
             instance = new FuzzyExtractor();
         }
         return instance;
-    }
-    private FuzzyExtractor() {
-        super(SourceData.class, ProcessedData.class);
     }
 
     @Override

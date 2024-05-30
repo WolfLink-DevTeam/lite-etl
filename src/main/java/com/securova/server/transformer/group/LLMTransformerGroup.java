@@ -1,4 +1,4 @@
-package com.securova.server.transformer;
+package com.securova.server.transformer.group;
 
 import com.securova.server.data.FormatDictionary;
 import com.securova.server.transformer.common.DataFormater;

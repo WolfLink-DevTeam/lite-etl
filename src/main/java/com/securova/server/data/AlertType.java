@@ -7,5 +7,5 @@ public enum AlertType {
     CS_VIRUS,
     LOCAL_RIGHTS,
     SUSPICIOUS,
-    UNKNOWN;
+    UNKNOWN
 }

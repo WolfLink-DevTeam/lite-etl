@@ -4,5 +4,5 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum ModelSource {
-    DASH_SCOPE,OPEN_AI;
+    DASH_SCOPE, OPEN_AI
 }

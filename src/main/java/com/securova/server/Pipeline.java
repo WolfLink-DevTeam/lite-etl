@@ -6,15 +6,11 @@ import com.securova.server.data.ProcessedData;
 import com.securova.server.data.SourceData;
 import com.securova.server.subscriber.DataSubscriber;
 import com.securova.server.transformer.DataTransformer;
-import com.securova.server.transformer.TransformerGroup;
+import com.securova.server.transformer.group.TransformerGroup;
 import com.securova.server.writer.DataWriter;
 import lombok.Builder;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-
-import javax.xml.transform.Transformer;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Pipeline {
@@ -48,13 +44,14 @@ public class Pipeline {
     private ProcessedData transform(@NotNull SourceData data) {
         ExtraData extraData = new ExtraData();
         Object nowData = data;
-        for (DataTransformer<?,?> transformer : transformerGroup.getTransformers()) {
-            nowData = transformer.transform(nowData,extraData);
-            if(nowData == null) return null;
+        for (DataTransformer<?, ?> transformer : transformerGroup.getTransformers()) {
+            nowData = transformer.transform(nowData, extraData);
+            if (nowData == null) return null;
         }
-        if(!(nowData instanceof ProcessedData)) throw new IllegalStateException();
+        if (!(nowData instanceof ProcessedData)) throw new IllegalStateException();
         return (ProcessedData) nowData;
     }
+
     private void write(ProcessedData data) {
         writer.write(data);
     }
