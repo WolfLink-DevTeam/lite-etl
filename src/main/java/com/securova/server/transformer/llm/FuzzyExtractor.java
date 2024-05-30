@@ -23,7 +23,6 @@ public class FuzzyExtractor extends DataTransformer<SourceData, ProcessedData> {
     @Override
     protected ProcessedData transformTo(@NotNull SourceData sourceData, @NotNull ExtraData extra) {
         extra.setContent(sourceData);
-        ProcessedData data = AiResponseConverter.toProcessedData(SynchronizedAiTransformer.get().extract(sourceData.toJson().toString()));
-        return data;
+        return AiResponseConverter.toProcessedData(SynchronizedAiTransformer.get().extract(sourceData.toJson().toString()));
     }
 }

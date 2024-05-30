@@ -58,8 +58,8 @@ public class ETLConfig {
                         .temperature(0d)
                         .logRequests(false)
                         .logResponses(false)
-                        .maxRetries(3)
-                        .timeout(Duration.of(30, ChronoUnit.SECONDS))
+                        .maxRetries(5)
+                        .timeout(Duration.of(60, ChronoUnit.SECONDS))
                         .build();
             }
         }
