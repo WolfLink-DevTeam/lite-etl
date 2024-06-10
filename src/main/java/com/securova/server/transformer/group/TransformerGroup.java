@@ -34,14 +34,14 @@ public class TransformerGroup {
 
                     throw new IllegalArgumentException("""
                             Transformer flows are not valid .
-                                                        
+                                                       \s
                             lastTransformer:
                                 className: %s
                                 fromClassName: %s
                             nextTransformer:
                                 className: %s
                                 toClassName: %s
-                            """.formatted(
+                           \s""".formatted(
                             lastTransformer.getClass().getName(),
                             lastTransformer.getToClass().getName(),
                             transformer.getClass().getName(),

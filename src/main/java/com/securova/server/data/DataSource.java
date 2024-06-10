@@ -1,8 +1,11 @@
 package com.securova.server.data;
 
 import com.google.gson.JsonElement;
+import com.securova.server.preprocessor.DataSplitter;
+import com.securova.server.preprocessor.UpdateTimeFinder;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public abstract class DataSource {
 
@@ -26,24 +29,28 @@ public abstract class DataSource {
         this.updateTime = updateTime;
     }
 
-    protected abstract Collection<Map.Entry<AlertType, JsonElement>> fetchJsonElement();
+    protected abstract Collection<Map.Entry<String, JsonElement>> fetchJsonElement();
 
     public Collection<SourceData> fetchData() {
         Collection<SourceData> dataSet = fetchJsonElement()
                 .stream()
                 .flatMap(it -> dataPreprocess(it.getKey(), it.getValue()).stream())
-                .filter(sourceData -> sourceData.updateTime().after(updateTime)) // 差量更新数据;
+                .filter(sourceData -> sourceData.updateTime() != null && sourceData.updateTime().after(updateTime)) // 差量更新数据;
                 .toList();
         Optional<SourceData> newestData = dataSet.stream().max(Comparator.comparing(SourceData::updateTime));
         newestData.ifPresent(data -> this.updateTime = data.updateTime());// 刷新更新时间
         return dataSet;
     }
 
-    private Collection<SourceData> dataPreprocess(AlertType type, JsonElement jsonElement) {
-        return dataSplitter
-                .split(type, jsonElement)// 数据分片
-                .stream()
-                .map(it -> new SourceData(type, updateTimeFinder.find(type, it), it))// 类型映射
-                .toList();
+    private Collection<SourceData> dataPreprocess(String typeName, JsonElement jsonElement) {
+        try {
+            return dataSplitter
+                    .split(typeName, jsonElement)// 数据分片
+                    .stream()
+                    .map(it -> new SourceData(typeName, updateTimeFinder.find(typeName, it), it))// 类型映射
+                    .toList();
+        } catch (Exception e) {
+            return Stream.of(new SourceData(typeName, null, jsonElement)).toList();
+        }
     }
 }

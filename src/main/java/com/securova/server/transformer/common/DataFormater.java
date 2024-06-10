@@ -16,7 +16,7 @@ public class DataFormater extends DataTransformer<SourceData, SourceData> {
 
     @Override
     protected SourceData transformTo(@NotNull SourceData sourceData, @NotNull ExtraData extra) {
-        dictionary.format(sourceData.content(), sourceData.type()); // 数据字段规格化
+        dictionary.format(sourceData.content(), sourceData.typeName()); // 数据字段规格化
         return sourceData;
     }
 }

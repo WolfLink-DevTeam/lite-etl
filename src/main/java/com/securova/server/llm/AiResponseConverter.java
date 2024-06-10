@@ -1,6 +1,5 @@
 package com.securova.server.llm;
 
-import com.securova.server.data.AlertType;
 import com.securova.server.data.ProcessedData;
 
 import java.util.Map;
@@ -15,7 +14,7 @@ public class AiResponseConverter {
     public static ProcessedData toProcessedData(String msg) {
         Map<String, String> map = ProcessedDataExtractor.extract(msg);
         ProcessedData.ProcessedDataBuilder builder = ProcessedData.builder();
-        builder.type(map.getOrDefault("type", AlertType.UNKNOWN.name()));
+        builder.type(map.getOrDefault("type", "UNKNOWN"));
         builder.externalIp(map.getOrDefault("externalIp", ""));
         builder.serverIp(map.getOrDefault("serverIp", ""));
         builder.serverId(map.getOrDefault("serverId", ""));

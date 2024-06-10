@@ -6,10 +6,10 @@ import com.google.gson.JsonObject;
 import java.util.Calendar;
 
 
-public record SourceData(AlertType type, Calendar updateTime, JsonElement content) {
+public record SourceData(String typeName, Calendar updateTime, JsonElement content) {
     public JsonObject toJson() {
         JsonObject jo = new JsonObject();
-        jo.addProperty("alert_type", type.name());
+        jo.addProperty("type", typeName);
         jo.add("body", content);
         return jo;
     }
