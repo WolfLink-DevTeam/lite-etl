@@ -1,4 +1,10 @@
 # Lite ETL
+
+![开源协议](https://img.shields.io/github/license/WolfLink-DevTeam/lite-etl?style=for-the-badge)
+![Stars](https://img.shields.io/github/stars/WolfLink-DevTeam/lite-etl?style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/WolfLink-DevTeam/lite-etl?style=for-the-badge)
+[![Star History Chart](https://api.star-history.com/svg?repos=WolfLink-DevTeam/lite-etl&type=Date)](https://star-history.com/#WolfLink-DevTeam/lite-etl&Date)
+
 Lite ETL 是一个用于大数据领域开发的通用 ETL 框架。采用管道式设计，并配合 PreProcessor、Data Reader、Data Transformer、Data Writer 等组件，提供了高效、现代化的数据处理能力。
 ## 特性
 - 轻量化设计：Lite ETL 专注于提供轻量级的 ETL 解决方案，避免了冗余的复杂性，使得使用者能够快速上手并集成到现有项目中。
