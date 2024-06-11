@@ -6,10 +6,10 @@ import com.securova.server.data.SourceData;
 import com.securova.server.transformer.DataTransformer;
 import org.jetbrains.annotations.NotNull;
 
-public class DataFormater extends DataTransformer<SourceData, SourceData> {
+public class DataFormatter extends DataTransformer<SourceData, SourceData> {
     FormatDictionary dictionary;
 
-    public DataFormater(FormatDictionary dictionary) {
+    public DataFormatter(FormatDictionary dictionary) {
         super(SourceData.class, SourceData.class);
         this.dictionary = dictionary;
     }
