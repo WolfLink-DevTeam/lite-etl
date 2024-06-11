@@ -7,7 +7,7 @@ Lite ETL 是一个用于大数据领域开发的通用 ETL 框架。采用管道
 - 高效性：JavaPipe 使用了现代化的算法和优化技术，确保在处理大规模数据时能够保持高效率。
 - 现代化架构：基于 Java 17 开发，充分利用了 Java 17 中的新特性，保持了与时俱进的现代化架构。
 ## 组件介绍
-![Pipeline Architecture](img/Pipeline Architecture.png)
+![image](img/Pipeline Architecture.png)
 ### Pre Processor
 当订阅者从数据源获取到数据后，会优先将数据交给数据预处理器进行处理。
 Lite ETL 默认提供了两种类型的数据预处理器：
